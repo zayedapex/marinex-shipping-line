@@ -123,23 +123,18 @@ if (svg && layer && route) {
   });
 
   const routeLength = route.getTotalLength();
-  const travelSeconds = 39;
-  const portPauseSeconds = 2.5;
+  const travelSeconds = reduceMotion ? 15 : 12;
+  const portPauseSeconds = 1.5;
   const cycleSeconds = travelSeconds * 2 + portPauseSeconds * 2;
   const routePoint = new DOMPoint();
-  let isVisible = false;
   let frame = 0;
-  const startTime = performance.now();
+  const startTime = performance.now() - portPauseSeconds * 1000;
 
   function resize() {
     const width = layer.clientWidth;
     const height = layer.clientHeight;
     if (!width || !height) return;
     renderer.setSize(width, height, false);
-    if (reduceMotion) {
-      updateShip(0);
-      renderer.render(scene, camera);
-    }
   }
 
   function updateShip(elapsed) {
@@ -166,20 +161,20 @@ if (svg && layer && route) {
 
     ship.position.set(point.x, (560 - point.y) * verticalScale, 0);
     ship.rotation.z = Math.atan2(dy, dx) - Math.PI / 2;
-    ship.position.z = 0.9 + Math.sin(elapsed / 830) * 0.24;
-    wakeMaterial.opacity = 0.29 + (Math.sin(elapsed / 640) + 1) * 0.08;
+    ship.position.z = 0.9 + (reduceMotion ? 0 : Math.sin(elapsed / 830) * 0.24);
+    wakeMaterial.opacity = reduceMotion ? 0.34 : 0.29 + (Math.sin(elapsed / 640) + 1) * 0.08;
   }
 
   function animate(now) {
     frame = 0;
-    if (!isVisible || document.hidden) return;
-    updateShip(reduceMotion ? 0 : now - startTime);
+    if (document.hidden) return;
+    updateShip(now - startTime);
     renderer.render(scene, camera);
-    if (!reduceMotion) frame = requestAnimationFrame(animate);
+    frame = requestAnimationFrame(animate);
   }
 
   function start() {
-    if (isVisible && !document.hidden && !frame) frame = requestAnimationFrame(animate);
+    if (!document.hidden && !frame) frame = requestAnimationFrame(animate);
   }
 
   new ResizeObserver(resize).observe(layer);
@@ -187,14 +182,7 @@ if (svg && layer && route) {
   if (routeScroll.clientWidth < layer.clientWidth) {
     routeScroll.scrollLeft = layer.clientWidth * (584.9 / 900) - routeScroll.clientWidth / 2;
   }
-  new IntersectionObserver((entries) => {
-    isVisible = entries[0].isIntersecting;
-    if (isVisible) start();
-    else if (frame) {
-      cancelAnimationFrame(frame);
-      frame = 0;
-    }
-  }).observe(layer);
   document.addEventListener('visibilitychange', start);
   resize();
+  start();
 }
