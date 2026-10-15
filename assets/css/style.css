@@ -72,8 +72,11 @@
     color:var(--white);
   }
   .logo .mark{
-    width:38px; height:38px;
+    width:42px; height:42px;
     flex-shrink:0;
+    object-fit:cover;
+    border-radius:50%;
+    background:#FFFFFF;
   }
   .logo .name{
     font-family:'Fraunces', serif;
@@ -503,6 +506,7 @@
   .foot-col a:hover{color:var(--white);}
   .foot-about p{font-size:14px; max-width:34ch; margin-bottom:18px; color:#9FB1C2;}
   .foot-logo{display:flex; align-items:center; gap:10px; margin-bottom:18px;}
+  .foot-logo img{width:34px; height:34px; flex-shrink:0; object-fit:cover; border-radius:50%; background:#FFFFFF;}
   .foot-logo .name{font-family:'Fraunces',serif; color:var(--white); font-size:18px; font-weight:600;}
   .foot-bottom{
     border-top:1px solid rgba(255,255,255,0.1); padding-top:24px;
