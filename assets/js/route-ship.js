@@ -128,6 +128,7 @@ if (svg && layer && route) {
   const cycleSeconds = travelSeconds * 2 + portPauseSeconds * 2;
   const routePoint = new DOMPoint();
   let frame = 0;
+  let hasRendered = false;
   const startTime = performance.now() - portPauseSeconds * 1000;
 
   function resize() {
@@ -170,6 +171,10 @@ if (svg && layer && route) {
     if (document.hidden) return;
     updateShip(now - startTime);
     renderer.render(scene, camera);
+    if (!hasRendered) {
+      layer.closest('.route-diagram')?.classList.add('has-3d-ship');
+      hasRendered = true;
+    }
     frame = requestAnimationFrame(animate);
   }
 

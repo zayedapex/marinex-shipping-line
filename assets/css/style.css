@@ -406,6 +406,8 @@
     background:#061A30;
     border:1px solid rgba(255,255,255,0.08);
   }
+  .route-ship-fallback{visibility:hidden; pointer-events:none;}
+  .route-diagram:not(.has-3d-ship) .route-ship-fallback{visibility:visible;}
   .route-scroll{position:relative; overflow-x:auto;}
   .route-diagram svg{width:100%; height:auto; display:block; min-width:720px;}
   .route-ship-layer{
@@ -531,7 +533,7 @@
   }
 
   /* ---------- Responsive ---------- */
-  @media (max-width: 920px){
+  @media (max-width: 1040px){
     nav a{font-size:20px;}
     nav{position:fixed; top:78px; left:0; right:0; bottom:0; background:var(--navy);
         flex-direction:column; align-items:flex-start; padding:28px 32px; gap:22px;
@@ -557,5 +559,11 @@
   }
 
   @media (max-width: 560px){
+    header .wrap{padding:0 16px; gap:12px;}
+    .logo{gap:8px; min-width:0;}
+    .logo .mark{width:38px; height:38px;}
+    .logo .name{font-size:15px;}
+    .logo .name small{font-size:9px; letter-spacing:1px;}
+    .nav-toggle{flex-shrink:0;}
     .stats .wrap{grid-template-columns:1fr;}
   }
